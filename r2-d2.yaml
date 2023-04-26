@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: r2-d2
+  labels:
+    org: resistance
+spec:
+  containers:
+  - name: r2-d2
+    image: docker.io/lizrice/netcat-message
+    env:
+    - name: MESSAGE
+      value: "b...be.....low power mode"
+    - name: PORT 
+      value: "80"
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 80

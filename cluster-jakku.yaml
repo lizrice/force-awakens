@@ -1,0 +1,15 @@
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+name: jakku
+nodes:
+  - role: control-plane
+networking:
+  disableDefaultCNI: true
+  ipFamily: ipv4
+  podSubnet: 10.0.0.0/16
+  kubeProxyMode: none
+  serviceSubnet: 192.168.0.0/24
+containerdConfigPatches:
+  - |-
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5001"]
+      endpoint = ["http://kind-registry:5000"]

@@ -1,0 +1,54 @@
+tunnel: vxlan
+ipv4:
+  enabled: true
+ipv6:
+  enabled: false
+autoDirectNodeRoutes: false
+cluster:
+  name: jakku
+  id: 1
+image:
+  repository: ${DOCKER_REGISTRY}/cilium/cilium
+  tag: ${DOCKER_TAG}
+  useDigest: false
+  pullPolicy: Always
+operator:
+  image:
+    repository: ${DOCKER_REGISTRY}/cilium/operator
+    tag: ${DOCKER_TAG}
+    useDigest: false
+    pullPolicy: Always
+    suffix: ""
+clustermesh:
+  useAPIServer: true
+  config:
+    enabled: true
+    enableClusterAwareAddressing: true
+    hasOverlappingPodCIDR: true
+  apiserver:
+    image:
+      repository: ${DOCKER_REGISTRY}/cilium/clustermesh-apiserver
+      tag: ${DOCKER_TAG}
+      useDigest: false
+      pullPolicy: Always
+hubble:
+  relay:
+    image:
+      repository: ${DOCKER_REGISTRY}/cilium/hubble-relay
+      tag: ${DOCKER_TAG}
+      digest: ""
+      useDigest: false
+      pullPolicy: Always
+kubeProxyReplacement: strict
+bpf:
+  monitorAggregation: none
+  lbExternalClusterIP: true
+socketLB:
+  enabled: true
+  hostNamespaceOnly: true
+ipam:
+  mode: kubernetes
+k8s:
+  requireIPv4PodCIDR: true
+  requireIPv6PodCIDR: false
+enablePortal: true

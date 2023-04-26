@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: resistance
+  # annotations:
+  #   io.cilium/global-service: "true"  
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    org: resistance
+    app: resistance
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resistance
+spec:
+  selector:
+    matchLabels:
+      org: resistance
+      app: resistance
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        org: resistance
+        app: resistance
+    spec:
+      containers:
+      - name: resistance
+        image: docker.io/lizrice/netcat-message
+        env: 
+        - name: MESSAGE
+          value: "General Leia Organa welcomes you to the Resistance"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080

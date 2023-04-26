@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: luke
+  annotations:
+    io.cilium/global-service: "true"
+    io.cilium/portal: "true"  
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    jedi: luke

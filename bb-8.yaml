@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bb-8
+  labels:
+    org: resistance
+spec:
+  containers:
+  - name: bb-8
+    image: docker.io/lizrice/netcat-message
+    env: 
+    - name: MESSAGE
+      value: "beep! beep-bee-beep! beepeebeep!!"
+    - name: PORT
+      value: "80"
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 80

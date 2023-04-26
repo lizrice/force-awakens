@@ -1,0 +1,12 @@
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: resistance
+spec:
+  endpointSelector:
+    matchLabels:
+      org: resistance
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            org: resistance

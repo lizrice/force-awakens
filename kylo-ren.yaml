@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kylo-ren
+  labels:
+    org: first-order
+spec:
+  containers:
+  - name: kylo-ren
+    image: docker.io/lizrice/netcat-message
+    env: 
+    - name: MESSAGE
+      value: "I'll show you the dark side"
+    - name: PORT
+      value: "80"
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 80
