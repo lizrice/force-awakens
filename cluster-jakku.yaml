@@ -6,9 +6,9 @@ nodes:
 networking:
   disableDefaultCNI: true
   ipFamily: ipv4
-  podSubnet: 10.0.0.0/16
+  podSubnet: 10.240.0.0/16
   kubeProxyMode: none
-  serviceSubnet: 192.168.0.0/24
+  serviceSubnet: 10.110.0.0/24
 containerdConfigPatches:
   - |-
     [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5001"]
