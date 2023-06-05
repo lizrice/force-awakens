@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
   - name: kylo-ren
-    image: docker.io/lizrice/netcat-message
+    image: ${DOCKER_REGISTRY}/netcat-message:${DOCKER_TAG}
     env: 
     - name: MESSAGE
       value: "I'll show you the dark side"
