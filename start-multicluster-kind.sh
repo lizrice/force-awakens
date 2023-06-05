@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eux
 
-CILIUM_DIR=~/src/cilium
+: CILIUM_DIR=~/src/cilium
 
 REG_NAME='kind-registry'
 REG_PORT='5001'
@@ -12,6 +12,7 @@ export DOCKER_REGISTRY=localhost:${REG_PORT}
 export DOCKER_TAG=force-awakens
 
 # Create the directories for the clusters and add the .envrc for this to work with direnv
+
 for cluster in jakku d-qar; do
     mkdir -p $cluster
     echo "export KUBECONFIG=./kubeconfig" > $cluster/.envrc
@@ -24,7 +25,12 @@ export KUBECONFIG=${JAKKU_KUBECONFIG}:${DQAR_KUBECONFIG}
 # Create the Jakku cluster
 kind create cluster --config cluster-jakku.yaml --kubeconfig ${JAKKU_KUBECONFIG}
 
-docker network connect "kind" ${REG_NAME}
+if docker inspect -f '{{.NetworkSettings.Networks}})' ${REG_NAME} | grep -q kind; 
+then
+  echo "Registry already connected to kind network"
+else 
+  docker network connect "kind" ${REG_NAME}
+fi 
 cat values-cluster-jakku.yaml | envsubst | cilium install --helm-values /dev/stdin --wait --chart-directory "${CHART_DIR}" --cluster-name jakku 
 cilium clustermesh enable --service-type NodePort --apiserver-image ${DOCKER_REGISTRY}/cilium/clustermesh-apiserver:${DOCKER_TAG}
 cilium clustermesh status --wait

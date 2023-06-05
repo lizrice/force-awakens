@@ -1,39 +1,43 @@
 # Force Awakens Cilium Mesh demo
 
 From KubeCon Amsterdam. Putting it here for now because some of what I showed
-was in a feature branch.  
+was in a feature branch.
 
+TODO:
+[ ] Build from feature branch for external workload feature
+[ ] Re-test external workloads
+
+## Prerequisites
+
+* Docker
+* Kind
+* direnv
+* Cilium CLI
+
+`export CILIUM_DIR=<local Cilium repo>` (defaults to ~/src/cilium)
 ## Local registry for Kind clusters
 
-Like [this](https://kind.sigs.k8s.io/docs/user/local-registry/). I run it on port 5001 because 5000 was already in use on my Mac.
-
-```
-docker run -d --restart=always -p "127.0.0.1:5001:5000" --name kind-registry registry:2
-```
-
-Feature branch build of cilium components tagged and pushed to the local registry.
-
-Dockerfile is used to build docker.io/lizrice/netcat-message. Probably should've
-put that in the local registry as well, but I didn't.
+Run `create-kind-registry.sh`. This runs a local registry, similar to
+[this](https://kind.sigs.k8s.io/docs/user/local-registry/), and populates it
+with the images needed for this demo. I run the local registry on port 5001
+because 5000 was already in use on my Mac.
 
 ## Create universe
 
 ```
-export CHART_DIR=$CILIUMMESHREPO"/install/kubernetes/cilium"
-export DOCKER_REGISTRY="localhost:5001"
-export DOCKER_TAG="portal-poc"
-
 ./start-multicluster-kind.sh
 ```
 
 ## Initial deploy
 
+The first time you `cd` into a directory you'll need to run `direnv allow`.
+
 ```
-kubectx kind-jakku
+cd jakku
 k apply -f bb-8.yaml
 k apply -f resistance-jakku.yaml
 
-kubectx kind-d-qar
+cd d-qar
 k apply -f r2-d2.yaml
 k apply -f kylo-ren.yaml
 k apply -f resistance-d-qar.yaml
@@ -53,8 +57,10 @@ while true; do echo -e "HTTP/1.1 200 OK\n\nHi I'm Luke" | nc -l -p 80 -N ; done
 
 ## Accessing services and endpoints
 
-bb-8 can access resistance
+In Jakku, bb-8 can access resistance
+
 ```
+cd ../jakku
 k exec -it bb-8 -- curl resistance
 ```
 
@@ -73,7 +79,7 @@ ks exec -it $CPOD -- cilium endpoint list
 ## Clustermesh
 
 Uncomment annotations in Jakku's resistance service to make it a global service,
-so bb-8 can access resistance in both locations.
+so bb-8 can access resistance in both locations. Then `k apply -f resistance-jakku.yaml`
 
 ```
 k get endpoints
