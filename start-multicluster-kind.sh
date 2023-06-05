@@ -12,9 +12,9 @@ export DOCKER_REGISTRY=localhost:${REG_PORT}
 export DOCKER_TAG=force-awakens
 
 # Create the directories for the clusters and add the .envrc for this to work with direnv
-for cluster in "jakku d-qar"; do
-    mkdir $cluster
-    echo "export KUBECONFIG=./kubeconfig\n" > $cluster/.envrc
+for cluster in jakku d-qar; do
+    mkdir -p $cluster
+    echo "export KUBECONFIG=./kubeconfig" > $cluster/.envrc
 done
 
 JAKKU_KUBECONFIG=jakku/kubeconfig
