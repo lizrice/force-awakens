@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
   - name: bb-8
-    image: docker.io/lizrice/netcat-message
+    image: ${DOCKER_REGISTRY}/netcat-message:${DOCKER_TAG}
     env: 
     - name: MESSAGE
       value: "beep! beep-bee-beep! beepeebeep!!"

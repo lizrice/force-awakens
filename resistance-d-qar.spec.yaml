@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: resistance
-        image: docker.io/lizrice/netcat-message
+        image: ${DOCKER_REGISTRY}/netcat-message:${DOCKER_TAG}
         env: 
         - name: MESSAGE
           value: "General Leia Organa welcomes you to the Resistance from the base on D'Qar"
